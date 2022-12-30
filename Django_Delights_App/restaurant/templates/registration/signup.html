@@ -2,11 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Register</title>
 </head>
 <body>
-  <h2>Login</h2>
-  <h3><a href="{% url 'signup' %}">Don't have an account? Sign-up here!</a></h3>
+  <h2>Registration Form</h2>
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
