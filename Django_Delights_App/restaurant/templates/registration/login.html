@@ -9,6 +9,15 @@
   <h3><a href="{% url 'signup' %}">Don't have an account? Sign-up here!</a></h3>
   <form method="post">
     {% csrf_token %}
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+     {% endif %}
+
     {{ form.as_p }}
       <button type="submit">Submit</button>
   </form>
