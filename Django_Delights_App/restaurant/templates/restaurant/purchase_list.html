@@ -1,0 +1,31 @@
+{% extends "restaurant/base.html" %}
+{% load static %}
+
+{% block head %}
+{% endblock %}
+
+{% block content%}
+  <h1>History of purchases made</h1>
+  <table>
+    <thead>
+      <tr>
+        <th colspan="2">Purchase Log</th>
+      </tr>
+      <tr>
+        <th colspan="1">Name</th>
+        <th colspan="1">Bill</th>
+        <th colspan="1">Transaction timestamp</th>
+      </tr>
+    </thead>
+
+    <tbody>
+        {% for purchase in object_list %}
+        <tr>
+          <td>{{ purchase.menu_item_id.name }}</td>
+          <td>{{purchase.bill}}lv.</td>
+          <td>{{purchase.time_of_purchase}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
