@@ -1,0 +1,12 @@
+{% extends "restaurant/base.html" %}
+{% load static %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+<form>
+    {% csrf_token %}
+    {{ form.as_p }}
+</form>
+{% endblock%}

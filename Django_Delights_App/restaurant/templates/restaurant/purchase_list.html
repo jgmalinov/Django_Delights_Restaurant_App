@@ -27,5 +27,18 @@
         </tr>
         {% endfor %}
     </tbody>
+
+    <tfoot>
+      <tr>
+        <th>Total Revenue</th>
+        <th>Total Production Cost</th>
+        <th>Net Profit</th>
+      </tr>
+      <tr>
+        <td>{{ total_purchases_revenue }}</td>
+        <td>{{ total_purchases_cost }}</td>
+        <td>{{ net_profit }}</td>
+      </tr>
+    </tfoot>
   </table>
 {% endblock %}
