@@ -10,6 +10,8 @@ from django.views.generic.edit import CreateView
 from .models import Ingredient, MenuItem, Purchase, RecipeRequirement
 from .forms import MenuItemCreateForm, RecipeRequirementCreateForm
 from functools import reduce
+import json
+from django.core import serializers
 # Create your views here.
 
 def signup_view(request):
@@ -80,5 +82,6 @@ def MenuItemCreate(request):
         pass
     else:
         form = MenuItemCreateForm()
-        context = {"ingredients": Ingredient.objects.all(), "form": form }
+        ingredients = serializers.serialize('json', Ingredient.objects.all())
+        context = {"ingredients": json.dumps(ingredients), "form": form }
         return render(request, "restaurant/menuitem_create.html", context)

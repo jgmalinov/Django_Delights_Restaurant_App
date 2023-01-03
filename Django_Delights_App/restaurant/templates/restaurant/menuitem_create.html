@@ -2,11 +2,43 @@
 {% load static %}
 
 {% block head %}
+<script src="https://kit.fontawesome.com/ae4e280129.js" crossorigin="anonymous"></script>
+<script type="text/javascript">
+    function addNewField() {
+        const form = document.getElementById('menuItemForm');
+        let ingredientsJSON = "{{ ingredients|escapejs }}";
+        const ingredients = JSON.parse(JSON.parse(ingredientsJSON));
+        const ingredientFieldNum = document.getElementsByClassName('ingredientFields').length;
+        const listName = `ingredientField${ingredientFieldNum}`
+        const newField = document.createElement('input');
+        newField.type = 'text';
+        newField.className = 'ingredientFields';
+        newField.setAttribute('list', listName);
+        const newDataList = document.createElement('datalist');
+        newDataList.id = listName;
+
+        for (let i=0; i < ingredients.length; i++) {
+            console.log(ingredients);
+            console.log(ingredients[i]);
+            const ingredientName = ingredients[i].fields.name;
+            const ingredientOption = document.createElement('option');
+            ingredientOption.value = ingredientName;
+            newDataList.appendChild(ingredientOption);
+        };
+
+        form.appendChild(newField);
+        form.appendChild(newDataList);
+    }
+
+
+</script>
 {% endblock %}
 
 {% block content %}
-<form>
+<form id="menuItemForm">
     {% csrf_token %}
     {{ form.as_p }}
+    <i class="fa-solid fa-plus" onclick="addNewField()"></i>
+
 </form>
 {% endblock%}
