@@ -2,43 +2,90 @@
 {% load static %}
 
 {% block head %}
-<script src="https://kit.fontawesome.com/ae4e280129.js" crossorigin="anonymous"></script>
 <script type="text/javascript">
     function addNewField() {
-        const form = document.getElementById('menuItemForm');
-        let ingredientsJSON = "{{ ingredients|escapejs }}";
-        const ingredients = JSON.parse(JSON.parse(ingredientsJSON));
-        const ingredientFieldNum = document.getElementsByClassName('ingredientFields').length;
-        const listName = `ingredientField${ingredientFieldNum}`
+        const ingredientNum = document.getElementsByClassName('ingredientFieldSet').length + 1;
+
+        const form = document.getElementById('ingredientsSection');
+        const ingredientFieldSet = document.createElement('fieldset');
+        ingredientFieldSet.className = `ingredientFieldSet`;
+
+        const legend = document.createElement('legend');
+        legend.innerHTML = `Ingredient ${ingredientNum}`;
+
         const newField = document.createElement('input');
         newField.type = 'text';
-        newField.className = 'ingredientFields';
-        newField.setAttribute('list', listName);
-        const newDataList = document.createElement('datalist');
-        newDataList.id = listName;
+        newField.className = 'ingredientField';
+        newField.setAttribute('list', 'ingredientList');
+        newField.setAttribute('name', `ingredient${ingredientNum}`);
+        newField.id = `ingredient${ingredientNum}`
+        newField.addEventListener('change', checkAppropriateMetric);
 
-        for (let i=0; i < ingredients.length; i++) {
-            console.log(ingredients);
-            console.log(ingredients[i]);
-            const ingredientName = ingredients[i].fields.name;
-            const ingredientOption = document.createElement('option');
-            ingredientOption.value = ingredientName;
-            newDataList.appendChild(ingredientOption);
+        newFieldLabel = document.createElement('label')
+        newFieldLabel.setAttribute = ('for', newField.id)
+        newFieldLabel.innerHTML = `ingredient${ingredientNum}`
+
+        const newFieldQuantity = document.createElement('input');
+        newFieldQuantity.type = 'number';
+        newFieldQuantity.id = `Quantity${ingredientNum}`
+        newFieldQuantity.name = `Quantity${ingredientNum}`
+        newField.className = 'ingredientFieldQuantity';
+
+        quantityLabel = document.createElement('label')
+        quantityLabel.setAttribute = ('for', newFieldQuantity.id)
+        quantityLabel.innerHTML = `Quantity of ${ingredientNum}`
+
+        const newFieldMetric = document.createElement('select');
+        newFieldMetric.id = `Metric${ingredientNum}`
+
+        const metrics = ['g', 'ml', 'units'];
+        for (let i = 0; i < metrics.length; i++) {
+            const metricOption = document.createElement('option');
+            metricOption.value = metrics[i];
+            metricOption.innerHTML = metrics[i];
+            newFieldMetric.appendChild(metricOption);
         };
 
-        form.appendChild(newField);
-        form.appendChild(newDataList);
-    }
+        ingredientFieldSet.appendChild(legend);
+        ingredientFieldSet.appendChild(newFieldLabel);
+        ingredientFieldSet.appendChild(newField);
+        ingredientFieldSet.appendChild(quantityLabel);
+        ingredientFieldSet.appendChild(newFieldQuantity);
+        ingredientFieldSet.appendChild(newFieldMetric);
+        form.appendChild(ingredientFieldSet);
+    };
 
+    function checkAppropriateMetric(e) {
+        const ingredients = JSON.parse("{{ ingredients_json|escapejs }}");
 
+        const selectedIngredient = e.target.value;
+        const metricField = e.target.parentNode.lastChild;
+
+        for (let i=0; i<ingredients.length; i++) {
+            const currentIngredient = ingredients[i].fields.name;
+            if (selectedIngredient === currentIngredient) {
+                metricField.value = ingredients[i].fields.metric.toLowerCase();
+                break;
+            }
+        }
+    };
 </script>
+<script src="https://kit.fontawesome.com/ae4e280129.js" crossorigin="anonymous"></script>
 {% endblock %}
 
 {% block content %}
-<form id="menuItemForm">
+<form method="POST" id="menuItemForm">
     {% csrf_token %}
     {{ form.as_p }}
     <i class="fa-solid fa-plus" onclick="addNewField()"></i>
+    <datalist id="ingredientList">
+        {% for ingredient in ingredients %}
+        <option value="{{ ingredient.name }}"></option>
+        {% endfor %}
+    </datalist>
+    <div id="ingredientsSection">
 
+    </div>
+    <input type="submit">Submit</input>
 </form>
 {% endblock%}

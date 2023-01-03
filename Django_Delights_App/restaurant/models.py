@@ -1,10 +1,18 @@
 from django.db import models
-
+from django.utils.translation import gettext_lazy as _
 # Create your models here.
 class Ingredient(models.Model):
     name = models.CharField(max_length=50, null=False)
     price = models.FloatField()
     quantity_available = models.FloatField()
+
+
+    class Metrics(models.TextChoices):
+        GRAMS = "G", _('g')
+        MILILITERS = "ML", _('ml')
+        UNITS = "UNITS", _('units')
+
+    metric = models.CharField(max_length=6, choices=Metrics.choices, default=Metrics.GRAMS)
 
     class Meta:
         ordering = ["name"]

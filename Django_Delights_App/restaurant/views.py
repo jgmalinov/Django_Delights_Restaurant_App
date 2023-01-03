@@ -79,9 +79,14 @@ class PurchaseList(LoginRequiredMixin, ListView):
 @login_required
 def MenuItemCreate(request):
     if request.method == "POST":
-        pass
+        menu_item_data = {'name': request.POST["name"].lower(), 'price': request.POST["price"]}
+        menu_item_form = MenuItemCreateForm(menu_item_data)
+        if menu_item_form.is_valid():
+            """ menu_item_form.save() """
+
     else:
         form = MenuItemCreateForm()
-        ingredients = serializers.serialize('json', Ingredient.objects.all())
-        context = {"ingredients": json.dumps(ingredients), "form": form }
+        ingredients = Ingredient.objects.all();
+        ingredients_json = serializers.serialize('json', ingredients)
+        context = {"ingredients": ingredients, "form": form, "ingredients_json": ingredients_json }
         return render(request, "restaurant/menuitem_create.html", context)
