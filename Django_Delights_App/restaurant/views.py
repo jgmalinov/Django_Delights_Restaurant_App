@@ -82,7 +82,28 @@ def MenuItemCreate(request):
         menu_item_data = {'name': request.POST["name"].lower(), 'price': request.POST["price"]}
         menu_item_form = MenuItemCreateForm(menu_item_data)
         if menu_item_form.is_valid():
-            """ menu_item_form.save() """
+            menu_item_form.save()
+            menu_item = MenuItem.objects.get(name=request.POST["name"].lower())
+
+            ingredient_counter = 1
+            while True:
+                ingredient_dict = dict(filter(lambda field: field[0][-1] == str(ingredient_counter), request.POST.items()))
+                if len(ingredient_dict) == 0:
+                    break
+
+                ingredient_name = ingredient_dict[f'ingredient{ingredient_counter}'].lower()
+                ingredient_quantity = ingredient_dict[f'quantity{ingredient_counter}']
+                ingredient_metric = ingredient_dict[f'metric{ingredient_counter}'].upper()
+
+                ingredient = Ingredient.objects.get_or_create(name=ingredient_name,
+                                                              price=0, quantity_available=0,
+                                                              metric=ingredient_metric)
+
+                RecipeRequirement.objects.get_or_create(ingredient_id = ingredient[0],
+                                                        menu_item_id = menu_item,
+                                                        quantity_needed = ingredient_quantity)
+
+
 
     else:
         form = MenuItemCreateForm()

@@ -27,16 +27,17 @@
 
         const newFieldQuantity = document.createElement('input');
         newFieldQuantity.type = 'number';
-        newFieldQuantity.id = `Quantity${ingredientNum}`
-        newFieldQuantity.name = `Quantity${ingredientNum}`
+        newFieldQuantity.id = `quantity${ingredientNum}`
+        newFieldQuantity.name = `quantity${ingredientNum}`
         newField.className = 'ingredientFieldQuantity';
 
         quantityLabel = document.createElement('label')
         quantityLabel.setAttribute = ('for', newFieldQuantity.id)
-        quantityLabel.innerHTML = `Quantity of ${ingredientNum}`
+        quantityLabel.innerHTML = `Quantity of ingredient ${ingredientNum}`
 
         const newFieldMetric = document.createElement('select');
-        newFieldMetric.id = `Metric${ingredientNum}`
+        newFieldMetric.id = `metric${ingredientNum}`
+        newFieldMetric.name = `metric${ingredientNum}`
 
         const metrics = ['g', 'ml', 'units'];
         for (let i = 0; i < metrics.length; i++) {
