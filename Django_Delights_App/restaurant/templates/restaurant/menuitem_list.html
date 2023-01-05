@@ -1,19 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Menu</title>
-</head>
-<body>
+{% extends "restaurant/base.html" %}
+{% load static %}
+
+{% block content %}
   <h1>Here's what's on the menu!</h1>
   <table>
     <thead>
       <tr>
-        <th colspan="2">Our Menu</th>
+        <th colspan="4">Our Menu</th>
       </tr>
       <tr>
         <th colspan="1">Name</th>
         <th colspan="1">Price</th>
+        <th colspan="2">Recipe Requirements</th>
       </tr>
     </thead>
 
@@ -22,10 +20,17 @@
         <tr>
           <td>{{menu_item.name}}</td>
           <td>{{menu_item.price}}lv.</td>
+          <td>
+            {% for entry in recipe_requirements %}
+              {% for item_name, requirement in entry.items %}
+                {% if item_name == menu_item.name %}
+                  {{requirement}}
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+          </td>
         </tr>
         {% endfor %}
     </tbody>
   </table>
-
-</body>
-</html>
+{% endblock %}

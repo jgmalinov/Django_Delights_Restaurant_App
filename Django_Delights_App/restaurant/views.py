@@ -49,6 +49,22 @@ class InventoryList(LoginRequiredMixin, ListView):
 class MenuItemList(LoginRequiredMixin, ListView):
     model = MenuItem
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        recipe_requirements = []
+        requirements = RecipeRequirement.objects.all()
+        for requirement in RecipeRequirement.objects.all():
+            menu_item = requirement.menu_item_id.name
+            ingredient = requirement.ingredient_id.name
+            metric = requirement.ingredient_id.metric.lower()
+            quantity_needed = requirement.quantity_needed
+            requirement_str = f'{ingredient} - {quantity_needed}{metric}\n'
+
+            recipe_requirements.append({menu_item: requirement_str})
+
+        context["recipe_requirements"] = recipe_requirements
+        return context
+
 class PurchaseList(LoginRequiredMixin, ListView):
     model = Purchase
 
@@ -101,9 +117,9 @@ def MenuItemCreate(request):
                                                                  'quantity_available': 0,
                                                                  'metric':ingredient_metric})
 
-                RecipeRequirement.objects.update_or_create(ingredient_id = ingredient[0],
+                recipe_requirement = RecipeRequirement.objects.update_or_create(ingredient_id = ingredient[0],
                                                         menu_item_id = menu_item,
-                                                        defaults= {'quantity_needed': F('quantity_needed') + ingredient_quantity})
+                                                        defaults= {'quantity_needed': ingredient_quantity})
                 ingredient_counter+= 1
 
 
