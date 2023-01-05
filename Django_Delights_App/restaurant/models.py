@@ -15,6 +15,9 @@ class Ingredient(models.Model):
     metric = models.CharField(max_length=6, choices=Metrics.choices, default=Metrics.GRAMS)
 
     class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["name"], name='ingredient_name_unique')
+        ]
         ordering = ["name"]
 
 class MenuItem(models.Model):
@@ -23,11 +26,19 @@ class MenuItem(models.Model):
 
     class Meta:
         ordering = ["name"]
+        constraints = [
+            models.UniqueConstraint(fields=['name'], name='unique_menu_items')
+        ]
 
 class RecipeRequirement(models.Model):
     ingredient_id = models.ForeignKey(Ingredient, on_delete=models.PROTECT)
     menu_item_id = models.ForeignKey(MenuItem, on_delete=models.CASCADE)
     quantity_needed = models.FloatField()
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=('ingredient_id', 'menu_item_id'), name='menu_item_ingredient_unique')
+        ]
 
     def is_sufficient(self, quantity_available):
         return self.quantity_needed >= quantity_available

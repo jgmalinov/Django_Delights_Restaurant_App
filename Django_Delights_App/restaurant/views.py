@@ -12,6 +12,7 @@ from .forms import MenuItemCreateForm, RecipeRequirementCreateForm
 from functools import reduce
 import json
 from django.core import serializers
+from django.db.models import F
 # Create your views here.
 
 def signup_view(request):
@@ -96,13 +97,14 @@ def MenuItemCreate(request):
                 ingredient_metric = ingredient_dict[f'metric{ingredient_counter}'].upper()
 
                 ingredient = Ingredient.objects.get_or_create(name=ingredient_name,
-                                                              price=0, quantity_available=0,
-                                                              metric=ingredient_metric)
+                                                                 defaults={'price': 0,
+                                                                 'quantity_available': 0,
+                                                                 'metric':ingredient_metric})
 
-                RecipeRequirement.objects.get_or_create(ingredient_id = ingredient[0],
+                RecipeRequirement.objects.update_or_create(ingredient_id = ingredient[0],
                                                         menu_item_id = menu_item,
-                                                        quantity_needed = ingredient_quantity)
-
+                                                        defaults= {'quantity_needed': F('quantity_needed') + ingredient_quantity})
+                ingredient_counter+= 1
 
 
     else:
