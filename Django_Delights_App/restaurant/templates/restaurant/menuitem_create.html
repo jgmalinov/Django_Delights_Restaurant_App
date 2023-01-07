@@ -10,6 +10,30 @@
         const ingredientFieldSet = document.createElement('fieldset');
         ingredientFieldSet.className = `ingredientFieldSet`;
 
+        const radioExisting = document.createElement('input');
+        radioExisting.type = 'radio';
+        radioExisting.id = `existing${ingredientNum}`;
+        radioExisting.setAttribute('checked', 'true');
+        radioExisting.setAttribute('name', `radio${ingredientNum}`);
+        radioExisting.setAttribute('value', 'ExistingIngredient');
+        radioExisting.addEventListener('change', existingMode);
+
+
+        const radioExistingLabel = document.createElement('label');
+        radioExistingLabel.setAttribute = ('for', radioExisting.id);
+        radioExistingLabel.innerHTML = 'Existing Ingredient';
+
+        const radioNew = document.createElement('input');
+        radioNew.type = 'radio';
+        radioNew.id = `new${ingredientNum}`;
+        radioNew.setAttribute('name', `radio${ingredientNum}`);
+        radioNew.setAttribute('value', 'NewIngredient');
+        radioNew.addEventListener('change', newOrUpdateMode);
+
+        const radioNewLabel = document.createElement('label');
+        radioNewLabel.setAttribute = ('for', radioNew.id);
+        radioNewLabel.innerHTML = 'New/Update Ingredient';
+
         const legend = document.createElement('legend');
         legend.innerHTML = `Ingredient ${ingredientNum}`;
 
@@ -18,8 +42,10 @@
         newField.className = 'ingredientField';
         newField.setAttribute('list', 'ingredientList');
         newField.setAttribute('name', `ingredient${ingredientNum}`);
+        newField.setAttribute('autocomplete', 'off');
         newField.id = `ingredient${ingredientNum}`
         newField.addEventListener('change', checkAppropriateMetric);
+        newField.addEventListener('keydown', handleKeyDown);
 
         newFieldLabel = document.createElement('label')
         newFieldLabel.setAttribute = ('for', newField.id)
@@ -39,6 +65,13 @@
         newFieldMetric.id = `metric${ingredientNum}`
         newFieldMetric.name = `metric${ingredientNum}`
 
+        const price = document.createElement('input');
+        price.type = 'number';
+        price.id = `price${ingredientNum}`;
+        price.name = `price${ingredientNum}`;
+        price.hidden = true;
+
+
         const metrics = ['g', 'ml', 'units'];
         for (let i = 0; i < metrics.length; i++) {
             const metricOption = document.createElement('option');
@@ -48,11 +81,16 @@
         };
 
         ingredientFieldSet.appendChild(legend);
+        ingredientFieldSet.appendChild(radioExisting);
+        ingredientFieldSet.appendChild(radioExistingLabel);
+        ingredientFieldSet.appendChild(radioNew);
+        ingredientFieldSet.appendChild(radioNewLabel);
         ingredientFieldSet.appendChild(newFieldLabel);
         ingredientFieldSet.appendChild(newField);
         ingredientFieldSet.appendChild(quantityLabel);
         ingredientFieldSet.appendChild(newFieldQuantity);
         ingredientFieldSet.appendChild(newFieldMetric);
+        ingredientFieldSet.appendChild(price);
         form.appendChild(ingredientFieldSet);
     };
 
@@ -70,6 +108,35 @@
             }
         }
     };
+
+    function existingMode(e) {
+        const ingredientNum = e.target.id.slice(-1);
+        const ingredientName = document.getElementById(`ingredient${ingredientNum}`);
+        ingredientName.addEventListener('keydown', handleKeyDown);
+        ingredientName.addEventListener('paste', handlePaste);
+
+        const ingredientPrice = document.getElementById(`price${ingredientNum}`);
+        ingredientPrice.hidden = true;
+    };
+
+    function newOrUpdateMode(e) {
+        const ingredientNum = e.target.id.slice(-1);
+        const ingredientName = document.getElementById(`ingredient${ingredientNum}`);
+        ingredientName.removeEventListener('keydown', handleKeyDown);
+        ingredientName.removeEventListener('paste', handlePaste);
+
+        const ingredientPrice = document.getElementById(`price${ingredientNum}`);
+        ingredientPrice.hidden = false;
+    };
+
+    function handleKeyDown(e) {
+        e.preventDefault();
+    };
+
+    function handlePaste(e) {
+        e.preventDefault();
+    };
+
 </script>
 <script src="https://kit.fontawesome.com/ae4e280129.js" crossorigin="anonymous"></script>
 {% endblock %}

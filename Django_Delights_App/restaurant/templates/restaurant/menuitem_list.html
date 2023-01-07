@@ -2,6 +2,15 @@
 {% load static %}
 
 {% block content %}
+
+  {% if messages %}
+  <ul class="messages">
+      {% for message in messages %}
+      <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+      {% endfor %}
+  </ul>
+  {% endif %}
+
   <h1>Here's what's on the menu!</h1>
   <table>
     <thead>
@@ -24,7 +33,7 @@
             {% for entry in recipe_requirements %}
               {% for item_name, requirement in entry.items %}
                 {% if item_name == menu_item.name %}
-                  {{requirement}}
+                  <pre>{{requirement}}</pre>
                 {% endif %}
               {% endfor %}
             {% endfor %}

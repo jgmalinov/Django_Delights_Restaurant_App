@@ -95,6 +95,10 @@ class PurchaseList(LoginRequiredMixin, ListView):
         return context
 @login_required
 def MenuItemCreate(request):
+    context = {}
+    ingredients = Ingredient.objects.all()
+    ingredients_json = serializers.serialize('json', ingredients)
+
     if request.method == "POST":
         menu_item_data = {'name': request.POST["name"].lower(), 'price': request.POST["price"]}
         menu_item_form = MenuItemCreateForm(menu_item_data)
@@ -108,24 +112,37 @@ def MenuItemCreate(request):
                 if len(ingredient_dict) == 0:
                     break
 
+                ingredient = ''
+                ingredient_type = ingredient_dict[f'radio{ingredient_counter}'].lower();
                 ingredient_name = ingredient_dict[f'ingredient{ingredient_counter}'].lower()
                 ingredient_quantity = ingredient_dict[f'quantity{ingredient_counter}']
                 ingredient_metric = ingredient_dict[f'metric{ingredient_counter}'].upper()
 
-                ingredient = Ingredient.objects.get_or_create(name=ingredient_name,
-                                                                 defaults={'price': 0,
-                                                                 'quantity_available': 0,
-                                                                 'metric':ingredient_metric})
+                if ingredient_type == 'existingingredient':
+                    ingredient = Ingredient.objects.get(name=ingredient_name)
 
-                recipe_requirement = RecipeRequirement.objects.update_or_create(ingredient_id = ingredient[0],
+                elif ingredient_type == 'newingredient':
+                    ingredient_price = ingredient_dict[f'price{ingredient_counter}']
+                    ingredient = Ingredient.objects.update_or_create(name=ingredient_name,
+                                                                     defaults={'price': ingredient_price,
+                                                                               'quantity_available': 0,
+                                                                               'metric': ingredient_metric})[0]
+
+                recipe_requirement = RecipeRequirement.objects.update_or_create(ingredient_id = ingredient,
                                                         menu_item_id = menu_item,
                                                         defaults= {'quantity_needed': ingredient_quantity})
                 ingredient_counter+= 1
 
+            messages.add_message(request, messages.SUCCESS, 'Menu item successfully added!')
+            context = {"ingredients": ingredients, "form": menu_item_form, "ingredients_json": ingredients_json}
+
+
+        else:
+            form = MenuItemCreateForm()
+            context = { "ingredients": ingredients, "form": menu_item_form, "ingredients_json": ingredients_json }
 
     else:
         form = MenuItemCreateForm()
-        ingredients = Ingredient.objects.all();
-        ingredients_json = serializers.serialize('json', ingredients)
         context = {"ingredients": ingredients, "form": form, "ingredients_json": ingredients_json }
-        return render(request, "restaurant/menuitem_create.html", context)
+
+    return render(request, "restaurant/menuitem_create.html", context)
