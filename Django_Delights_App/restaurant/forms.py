@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import MenuItem, RecipeRequirement
+from .models import MenuItem, RecipeRequirement, Ingredient
 
 class MenuItemCreateForm(forms.ModelForm):
     class Meta:
@@ -12,5 +12,7 @@ class RecipeRequirementCreateForm(forms.ModelForm):
         model = RecipeRequirement
         fields = ['menu_item_id', 'ingredient_id', 'quantity_needed']
 
-
-
+class IngredientCreateForm(forms.ModelForm):
+    class Meta:
+        model = Ingredient
+        fields = "__all__"

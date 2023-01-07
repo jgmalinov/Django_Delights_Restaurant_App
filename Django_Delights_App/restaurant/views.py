@@ -6,9 +6,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.views.generic import ListView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Ingredient, MenuItem, Purchase, RecipeRequirement
-from .forms import MenuItemCreateForm, RecipeRequirementCreateForm
+from .forms import MenuItemCreateForm, RecipeRequirementCreateForm, IngredientCreateForm
 from functools import reduce
 import json
 from django.core import serializers
@@ -146,3 +146,20 @@ def MenuItemCreate(request):
         context = {"ingredients": ingredients, "form": form, "ingredients_json": ingredients_json }
 
     return render(request, "restaurant/menuitem_create.html", context)
+
+
+class IngredientCreateView(LoginRequiredMixin, CreateView):
+    model = Ingredient
+    fields = "__all__"
+    template_name = "restaurant/ingredient_create.html"
+    success_url = "/accounts/inventory"
+
+class IngredientUpdateView(LoginRequiredMixin, UpdateView):
+    model = Ingredient
+    fields = "__all__"
+    template_name = "restaurant/ingredient_update.html"
+    success_url = "/accounts/inventory"
+
+class IngredientDeleteView(LoginRequiredMixin, DeleteView):
+    model = Ingredient
+    success_url = "/accounts/inventory"

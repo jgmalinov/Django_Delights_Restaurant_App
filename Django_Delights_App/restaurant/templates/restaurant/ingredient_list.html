@@ -25,8 +25,12 @@
           <td>{{inventory_item.name}}</td>
           <td>{{inventory_item.price}}lv.</td>
           <td>{{inventory_item.quantity_available}}</td>
+          <td><a href="{% url 'ingredient_update' inventory_item.id %}"><button>Edit</button></a></td>
+          <td><a href="{% url 'ingredient_delete' inventory_item.id %}"><button>Delete</button></a></td>
         </tr>
         {% endfor %}
     </tbody>
   </table>
+  <a href="{% url 'ingredient_create' %}">Add a new inventory item</a>
+
 {% endblock %}
