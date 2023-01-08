@@ -8,11 +8,12 @@ from django.contrib import messages
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Ingredient, MenuItem, Purchase, RecipeRequirement
-from .forms import MenuItemCreateForm, RecipeRequirementCreateForm, IngredientCreateForm
+from .forms import MenuItemCreateForm, RecipeRequirementCreateForm, IngredientCreateForm, PurchaseCreateForm
 from functools import reduce
 import json
 from django.core import serializers
 from django.db.models import F
+from datetime import datetime
 # Create your views here.
 
 def signup_view(request):
@@ -70,29 +71,18 @@ class PurchaseList(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        menu_items_purchased = [purchase.menu_item_id for purchase in Purchase.objects.all()]
-        cost_and_revenue_per_item = {}
+        purchases = Purchase.objects.all()
 
-        for menu_item in menu_items_purchased:
-            if not menu_item.name in cost_and_revenue_per_item.keys():
-                recipe_requirements = RecipeRequirement.objects.get(menu_item_id=menu_item)
-                total_menu_item_cost = 0
-                cost_per_req = map(lambda recipe_req: recipe_req.quantity_needed * recipe_req.ingredient_id.price, recipe_requirements)
-                cost_per_item = reduce(lambda a, b: a+b, cost_per_req)
+        total_cost = sum([purchase.cost for purchase in purchases])
+        total_revenue = sum([purchase.revenue for purchase in purchases])
+        net_profit = total_revenue - total_cost
 
-                cost_and_revenue_per_item[menu_item.name] = {revenue: menu_item.price, cost: cost_per_item}
-
-            else:
-                cost_and_revenue_per_item[menu_item.name].revenue += cost_and_revenue_per_item[menu_item.name].revenue
-                cost_and_revenue_per_item[menu_item.name].cost += cost_and_revenue_per_item[menu_item.name].cost
-
-        total_purchases_cost = sum(map(lambda menu_item_values: menu_item_values.cost, cost_and_revenue_per_item.values()))
-        total_purchases_revenue = sum(map(lambda menu_item_values: menu_item_values.revenue, cost_and_revenue_per_item.values()))
-        context["total_purchases_cost"] = total_purchases_cost
-        context["total_purchases_revenue"] = total_purchases_revenue
-        context["net_profit"] = total_purchases_revenue - total_purchases_cost
+        context["total_cost"] = total_cost
+        context["total_revenue"] = total_revenue
+        context["net_profit"] = net_profit
 
         return context
+
 @login_required
 def MenuItemCreate(request):
     context = {}
@@ -146,6 +136,65 @@ def MenuItemCreate(request):
         context = {"ingredients": ingredients, "form": form, "ingredients_json": ingredients_json }
 
     return render(request, "restaurant/menuitem_create.html", context)
+
+
+def MenuItemDelete(request, pk):
+    menu_item = MenuItem.objects.get(pk=pk)
+    requirements = RecipeRequirement.objects.filter(menu_item_id = menu_item)
+
+    for requirement in requirements:
+        requirement.delete()
+
+    menu_item.delete()
+
+    messages.add_message(request, messages.SUCCESS, f'Menu item "{menu_item.name}" successfully removed from the menu!"')
+    return redirect("menu")
+
+
+@login_required
+def PurchaseCreate(request):
+    menu_items = MenuItem.objects.all()
+    context = {'menu_items': menu_items}
+
+    if request.method == "POST":
+        menu_item = MenuItem.objects.get(name=request.POST['menu_item'])
+        item_quantity = int(request.POST['item_quantity'])
+        recipe_requirements = RecipeRequirement.objects.filter(menu_item_id=menu_item)
+        not_enough = []
+
+        for requirement in recipe_requirements:
+            ingredient = requirement.ingredient_id
+            quantity_needed = requirement.quantity_needed * float(item_quantity)
+            if quantity_needed > ingredient.quantity_available:
+                message_str = f'{ingredient.name} ({ingredient.quantity_available:.2f}/{quantity_needed:.2f}{ingredient.metric.lower()})'
+                not_enough.append(message_str)
+
+        if len(not_enough) > 0:
+            messages.add_message(request, messages.ERROR, f'Not enough {", ".join(not_enough)}')
+
+        else:
+            cost_per_item = menu_item.get_cost()
+            cost = menu_item.get_cost() * item_quantity
+            revenue = menu_item.price * item_quantity
+            now = datetime.now()
+            now_str = now.strftime("%Y-%m-%d %H:%M")
+            for requirement in recipe_requirements:
+                ingredient = requirement.ingredient_id
+                ingredient.quantity_available = ingredient.quantity_available - requirement.quantity_needed * item_quantity
+                ingredient.save()
+
+            new_purchase = Purchase(menu_item_id=menu_item,
+                                    time_of_purchase=now_str,
+                                    revenue=revenue,
+                                    cost=cost,
+                                    quantity_purchased = item_quantity)
+            new_purchase.save()
+
+            messages.add_message(request, messages.SUCCESS, f'{item_quantity} {menu_item.name}/s purchased for {round(cost, 2)}lv.')
+
+    return render(request, 'restaurant/purchase_create.html', context)
+
+
 
 
 class IngredientCreateView(LoginRequiredMixin, CreateView):

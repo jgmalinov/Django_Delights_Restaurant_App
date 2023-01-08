@@ -55,11 +55,12 @@
         newFieldQuantity.type = 'number';
         newFieldQuantity.id = `quantity${ingredientNum}`
         newFieldQuantity.name = `quantity${ingredientNum}`
+        newFieldQuantity.step = 0.01;
         newField.className = 'ingredientFieldQuantity';
 
         quantityLabel = document.createElement('label')
         quantityLabel.setAttribute = ('for', newFieldQuantity.id)
-        quantityLabel.innerHTML = `Quantity of ingredient ${ingredientNum}`
+        quantityLabel.innerHTML = `quantity`
 
         const newFieldMetric = document.createElement('select');
         newFieldMetric.id = `metric${ingredientNum}`
@@ -71,8 +72,12 @@
         price.name = `price${ingredientNum}`;
         price.hidden = true;
 
+        priceLabel = document.createElement('label');
+        priceLabel.setAttribute('for', price.id);
+        priceLabel.innerHTML = 'price';
 
-        const metrics = ['g', 'ml', 'units'];
+
+        const metrics = ['kg', 'l', 'units'];
         for (let i = 0; i < metrics.length; i++) {
             const metricOption = document.createElement('option');
             metricOption.value = metrics[i];
@@ -91,6 +96,7 @@
         ingredientFieldSet.appendChild(newFieldQuantity);
         ingredientFieldSet.appendChild(newFieldMetric);
         ingredientFieldSet.appendChild(price);
+        ingredientFieldSet.appendChild(priceLabel);
         form.appendChild(ingredientFieldSet);
     };
 

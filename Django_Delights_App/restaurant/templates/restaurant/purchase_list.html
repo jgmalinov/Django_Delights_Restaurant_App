@@ -9,11 +9,12 @@
   <table>
     <thead>
       <tr>
-        <th colspan="2">Purchase Log</th>
+        <th colspan="4">Purchase Log</th>
       </tr>
       <tr>
         <th colspan="1">Name</th>
         <th colspan="1">Bill</th>
+        <th colspan="1">Production Cost</th>
         <th colspan="1">Transaction timestamp</th>
       </tr>
     </thead>
@@ -22,7 +23,8 @@
         {% for purchase in object_list %}
         <tr>
           <td>{{ purchase.menu_item_id.name }}</td>
-          <td>{{purchase.bill}}lv.</td>
+          <td>{{purchase.revenue|floatformat:2}}lv.</td>
+          <td>{{purchase.cost|floatformat:2}}lv.</td>
           <td>{{purchase.time_of_purchase}}</td>
         </tr>
         {% endfor %}
@@ -35,9 +37,10 @@
         <th>Net Profit</th>
       </tr>
       <tr>
-        <td>{{ total_purchases_revenue }}</td>
-        <td>{{ total_purchases_cost }}</td>
-        <td>{{ net_profit }}</td>
+        <td></td>
+        <td>{{ total_revenue|floatformat:2 }}lv.</td>
+        <td>{{ total_cost|floatformat:2 }}lv.</td>
+        <td>{{ net_profit|floatformat:2 }}lv.</td>
       </tr>
     </tfoot>
   </table>

@@ -8,11 +8,11 @@ class Ingredient(models.Model):
 
 
     class Metrics(models.TextChoices):
-        GRAMS = "G", _('g')
-        MILILITERS = "ML", _('ml')
+        KILOGRAMS = "KG", _('kg')
+        LITERS = "L", _('l')
         UNITS = "UNITS", _('units')
 
-    metric = models.CharField(max_length=6, choices=Metrics.choices, default=Metrics.GRAMS)
+    metric = models.CharField(max_length=6, choices=Metrics.choices, default=Metrics.KILOGRAMS)
 
     class Meta:
         constraints = [
@@ -29,6 +29,12 @@ class MenuItem(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['name'], name='unique_menu_items')
         ]
+
+    def get_cost(self):
+        requirements = RecipeRequirement.objects.filter(menu_item_id=self)
+        ingredients = [requirement.ingredient_id.price * requirement.quantity_needed for requirement in requirements]
+        cost = sum(ingredients)
+        return cost
 
 class RecipeRequirement(models.Model):
     ingredient_id = models.ForeignKey(Ingredient, on_delete=models.PROTECT)
@@ -47,7 +53,9 @@ class RecipeRequirement(models.Model):
 class Purchase(models.Model):
     menu_item_id = models.ForeignKey(MenuItem, on_delete=models.PROTECT)
     time_of_purchase = models.DateTimeField()
-    bill = models.FloatField()
+    revenue = models.FloatField()
+    cost = models.FloatField(default=0)
+    quantity_purchased = models.IntegerField(default=1)
 
     class Meta:
         ordering = ["time_of_purchase"]

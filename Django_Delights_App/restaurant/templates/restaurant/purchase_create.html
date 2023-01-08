@@ -1,0 +1,30 @@
+{% extends "restaurant/base.html" %}
+{% load static %}
+
+{% block head %}
+{% endblock %}
+
+{% block content%}
+
+{% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+    <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+<form method="POST">
+  {% csrf_token %}
+  <label for="menu_item">Select an item from the menu!</label>
+  <select name="menu_item" id="menu_item" required>
+    {% for item in menu_items %}
+    <option value="{{ item.name }}">{{ item.name }}</option>
+    {% endfor %}
+  </select>
+  <label for="item_quantity">How many portions?</label>
+  <input type="number" name="item_quantity" id="item_quantity" min="1" required>
+  <input type="submit" value="Submit">
+</form>
+
+{% endblock %}

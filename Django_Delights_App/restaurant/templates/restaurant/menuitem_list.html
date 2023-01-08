@@ -38,6 +38,7 @@
               {% endfor %}
             {% endfor %}
           </td>
+          <td><a href="{% url 'menu_delete' menu_item.id %}"><button>Delete</button></a></td>
         </tr>
         {% endfor %}
     </tbody>
