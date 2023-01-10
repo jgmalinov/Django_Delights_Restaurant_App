@@ -22,6 +22,10 @@ a {
     text-decoration: none;
 }
 
+.submitButton {
+    margin: 20px 0px 10px 0px;
+}
+
 header, footer {
     background: rgb(0, 0, 0, 0.3);
     display: flex;
@@ -80,14 +84,10 @@ header div {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 700px;
-    height: 92%;
-    border: 1px solid white;
-    border-radius: 3px;
+    border-radius: 10px;
     background: rgb(0, 0, 0, 0.3);
     backdrop-filter: blur(10px);
-    overflow: scroll;
-    padding: 10px;
+    padding: 25px;
 }
 
 #view h1 {
@@ -110,13 +110,14 @@ td, th {
 }
 
 form {
-    width: 80%;
+    width: 600px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    align-items: safe center;
     border: 1px solid white;
-
+    overflow-y: scroll;
+    scroll-behavior: smooth;
 }
 
 form p {
@@ -125,8 +126,9 @@ form p {
     flex-direction: column;
 }
 
-form input {
+form input, form select {
     width: 150px;
+    margin-bottom: 10px;
 }
 
 form select {
@@ -135,11 +137,18 @@ form select {
     box-sizing: content-box;
 }
 
-
 form fieldset {
-    width: 90%;
     display: flex;
     flex-direction: column;
+}
+
+.radio {
+    width: fit-content;
+}
+
+#ingredientsSection {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
 }
 
 footer {

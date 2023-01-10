@@ -16,6 +16,7 @@
         const radioExisting = document.createElement('input');
         radioExisting.type = 'radio';
         radioExisting.id = `existing${ingredientNum}`;
+        radioExisting.className = 'radio';
         radioExisting.setAttribute('checked', 'true');
         radioExisting.setAttribute('name', `radio${ingredientNum}`);
         radioExisting.setAttribute('value', 'ExistingIngredient');
@@ -29,6 +30,7 @@
         const radioNew = document.createElement('input');
         radioNew.type = 'radio';
         radioNew.id = `new${ingredientNum}`;
+        radioNew.className = 'radio';
         radioNew.setAttribute('name', `radio${ingredientNum}`);
         radioNew.setAttribute('value', 'NewIngredient');
         radioNew.addEventListener('change', newOrUpdateMode);
@@ -69,6 +71,10 @@
         newFieldMetric.id = `metric${ingredientNum}`
         newFieldMetric.name = `metric${ingredientNum}`
 
+        const metricLabel = document.createElement('label');
+        metricLabel.setAttribute('for', newFieldMetric.id);
+        metricLabel.innerHTML = 'metric';
+
         const price = document.createElement('input');
         price.type = 'number';
         price.id = `price${ingredientNum}`;
@@ -77,6 +83,8 @@
 
         priceLabel = document.createElement('label');
         priceLabel.setAttribute('for', price.id);
+        priceLabel.setAttribute('id', `priceLabel${ingredientNum}`);
+        priceLabel.hidden = true;
         priceLabel.innerHTML = 'price';
 
 
@@ -89,17 +97,18 @@
         };
 
         ingredientFieldSet.appendChild(legend);
-        ingredientFieldSet.appendChild(radioExisting);
         ingredientFieldSet.appendChild(radioExistingLabel);
-        ingredientFieldSet.appendChild(radioNew);
+        ingredientFieldSet.appendChild(radioExisting);
         ingredientFieldSet.appendChild(radioNewLabel);
+        ingredientFieldSet.appendChild(radioNew);
         ingredientFieldSet.appendChild(newFieldLabel);
         ingredientFieldSet.appendChild(newField);
         ingredientFieldSet.appendChild(quantityLabel);
         ingredientFieldSet.appendChild(newFieldQuantity);
+        ingredientFieldSet.appendChild(metricLabel);
         ingredientFieldSet.appendChild(newFieldMetric);
-        ingredientFieldSet.appendChild(price);
         ingredientFieldSet.appendChild(priceLabel);
+        ingredientFieldSet.appendChild(price);
         form.appendChild(ingredientFieldSet);
     };
 
@@ -126,6 +135,9 @@
 
         const ingredientPrice = document.getElementById(`price${ingredientNum}`);
         ingredientPrice.hidden = true;
+
+        const priceLabel = document.getElementById(`priceLabel${ingredientNum}`);
+        priceLabel.hidden = true;
     };
 
     function newOrUpdateMode(e) {
@@ -136,6 +148,9 @@
 
         const ingredientPrice = document.getElementById(`price${ingredientNum}`);
         ingredientPrice.hidden = false;
+
+        const priceLabel = document.getElementById(`priceLabel${ingredientNum}`);
+        priceLabel.hidden = false;
     };
 
     function handleKeyDown(e) {
@@ -154,7 +169,8 @@
 <form method="POST" id="menuItemForm">
     {% csrf_token %}
     {{ form.as_p }}
-    <i class="fa-solid fa-plus" onclick="addNewField()"></i>
+    <i class="fa-solid fa-plus" onclick="addNewField()">Add ingredient</i>
+    
     <datalist id="ingredientList">
         {% for ingredient in ingredients %}
         <option value="{{ ingredient.name }}"></option>
@@ -163,6 +179,6 @@
     <div id="ingredientsSection">
 
     </div>
-    <input type="submit">Submit</input>
+    <input class="submitButton" type="submit" value="Submit"></input>
 </form>
 {% endblock%}
