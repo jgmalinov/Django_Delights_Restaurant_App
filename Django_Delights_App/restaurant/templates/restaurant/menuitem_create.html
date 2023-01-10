@@ -2,6 +2,9 @@
 {% load static %}
 
 {% block head %}
+
+<link rel="stylesheet" href="{% static 'restaurant/style.css' %}">
+
 <script type="text/javascript">
     function addNewField() {
         const ingredientNum = document.getElementsByClassName('ingredientFieldSet').length + 1;

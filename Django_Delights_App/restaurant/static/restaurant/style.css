@@ -1,0 +1,148 @@
+html {
+    height: 100vh;
+}
+
+
+body {
+    display: grid;
+    height: 100%;
+    grid-template: 10% 80% 10% / 1fr 3fr;
+    grid-template-areas:
+    "header header" 
+    "base view"
+    "footer footer";
+    background-image: url("./authentic-italian-pasta.jpg");
+    background-size: cover;
+    color: white;
+    margin: 0px;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+header, footer {
+    background: rgb(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 20px;
+    backdrop-filter: blur(10px);
+}
+
+
+header {
+    grid-area: header;
+}
+
+header div {
+    text-align: right;
+}
+
+#logo {
+    font-size: 36px;
+    margin: 18px 0px;
+}
+
+#base {
+    grid-area: base;
+    border-right: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-right: 1px solid white;
+}
+
+#base li {
+    display: block;
+    list-style-type: none;
+}
+
+#base a {
+    display: block;
+    font-size: 18px;
+    padding: 12px 0px 12px 20px;
+    margin: 15px 0px;
+    list-style-type: none;
+    transition: 0.3s;
+}
+
+#base a:hover {
+    background-color: gainsboro;
+    color: black;
+}
+
+#view {
+    justify-self: center;
+    align-self: center;
+    grid-area: view;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 700px;
+    height: 92%;
+    border: 1px solid white;
+    border-radius: 3px;
+    background: rgb(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    overflow: scroll;
+    padding: 10px;
+}
+
+#view h1 {
+    margin: 20px 0px 30px 0px;
+}
+
+table {
+    height: 75%;
+    width: 85%;
+}
+
+table, td, th {
+    border: 1px solid white;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+td, th {
+    padding: 5px 5px;
+}
+
+form {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid white;
+
+}
+
+form p {
+    width: 150px;
+    display: flex;
+    flex-direction: column;
+}
+
+form input {
+    width: 150px;
+}
+
+form select {
+    width: 150px;
+    padding: 2px 3px;
+    box-sizing: content-box;
+}
+
+
+form fieldset {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+}
+
+footer {
+    grid-area: footer;
+}
+

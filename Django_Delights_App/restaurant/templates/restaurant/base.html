@@ -7,27 +7,21 @@
     {% endblock %}
 </head>
 <body>
-    <section id="base">
-        <header>
-            <h1>Django Delights</h1>
+    <header>
+        <h1 id='logo'>Django Delights</h1>
+        <div>
             <h3>Welcome, {{ username }}!</h3>
             <h3><a href="{% url 'logout' %}">Logout</a></h3>
-        </header>
+        </div>
+    </header>
 
-        <main>
-            <ul>
-                <h2><a>Restock</a></h2>
-                <h2><a href="{% url 'purchase_create' %}">Record a Purchase</a></h2>
-                <h2><a href="{% url 'menu_create' %}">Add a Menu Item</a></h2>
-                <h2><a href="{% url 'inventory' %}">View Inventory</a></h2>
-                <h2><a href="{% url 'menu' %}">View Menu</a></h2>
-                <h2><a href="{% url 'purchase' %}">View Purchase Log</a></h2>
-            </ul>
-        </main>
-
-        <footer>
-            <h3><a href="{% url 'about' %}">About App</a></h3>
-        </footer>
+    <section id="base">
+            <a href="{% url 'purchase_create' %}">RECORD A PURCHASE</a>
+            <a href="{% url 'purchase' %}">VIEW PURCHASE LOG</a>
+            <a href="{% url 'menu_create' %}">ADD A MENU ITEM</a>
+            <a href="{% url 'menu' %}">VIEW MENU</a>
+            <a href="{% url 'ingredient_create' %}">ADD NEW INVENTORY ITEM</a>
+            <a href="{% url 'inventory' %}">VIEW INVENTORY</a>
     </section>
 
     <section id="view">
@@ -43,5 +37,9 @@
 
         {% endblock %}
     </section>
+
+    <footer>
+        <h3><a href="{% url 'about' %}">About App</a></h3>
+    </footer>
 </body>
 </html>

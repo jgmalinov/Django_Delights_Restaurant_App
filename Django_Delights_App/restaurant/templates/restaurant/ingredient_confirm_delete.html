@@ -1,6 +1,12 @@
 {% extends "restaurant/base.html" %}
 {% load static %}
 
+{% block head %}
+
+<link rel="stylesheet" href="{% static 'restaurant/style.css' %}">
+
+{% endblock %}
+
 {% block content %}
   <form method="POST">
     {% csrf_token %}

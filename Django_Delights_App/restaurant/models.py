@@ -1,8 +1,14 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 # Create your models here.
+
+class NameField(models.CharField):
+    def get_prep_value(self, value):
+        return str(value).lower()
+
+
 class Ingredient(models.Model):
-    name = models.CharField(max_length=50, null=False)
+    name = NameField(max_length=50, null=False)
     price = models.FloatField()
     quantity_available = models.FloatField()
 

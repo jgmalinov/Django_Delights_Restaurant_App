@@ -147,7 +147,7 @@ def MenuItemDelete(request, pk):
 
     menu_item.delete()
 
-    messages.add_message(request, messages.SUCCESS, f'Menu item "{menu_item.name}" successfully removed from the menu!"')
+    messages.add_message(request, messages.SUCCESS, f'Menu item "{menu_item.name}" successfully removed from the menu!')
     return redirect("menu")
 
 
@@ -199,7 +199,7 @@ def PurchaseCreate(request):
 
 class IngredientCreateView(LoginRequiredMixin, CreateView):
     model = Ingredient
-    fields = "__all__"
+    form_class = IngredientCreateForm
     template_name = "restaurant/ingredient_create.html"
     success_url = "/accounts/inventory"
 
