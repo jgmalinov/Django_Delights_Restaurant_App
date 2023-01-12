@@ -4,6 +4,7 @@ html {
 
 
 body {
+    font-family: 'Merienda', cursive;
     display: grid;
     height: 100%;
     grid-template: 10% 80% 10% / 1fr 3fr;
@@ -26,6 +27,19 @@ a {
     margin: 20px 0px 10px 0px;
 }
 
+#logoutButton {
+    display: block;
+    width: fit-content;
+}
+
+#navGroup1, #navGroup2, #navGroup3 {
+    padding: 20px 0px;
+}
+
+#navGroup1, #navGroup2 {
+    border-bottom: 1px solid white;
+}
+
 header, footer {
     background: rgb(0, 0, 0, 0.3);
     display: flex;
@@ -40,11 +54,19 @@ header {
 }
 
 header div {
+    font-size: 18px;
+}
+
+header p {
     text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
 }
 
 #logo {
-    font-size: 36px;
+    font-family: 'Italianno', cursive;
+    font-size: 60px;
     margin: 18px 0px;
 }
 
@@ -62,16 +84,19 @@ header div {
     list-style-type: none;
 }
 
+a {
+    transition: 0.3s;
+}
+
 #base a {
     display: block;
     font-size: 18px;
     padding: 12px 0px 12px 20px;
     margin: 15px 0px;
     list-style-type: none;
-    transition: 0.3s;
 }
 
-#base a:hover {
+a:hover {
     background-color: gainsboro;
     color: black;
 }
@@ -155,3 +180,38 @@ footer {
     grid-area: footer;
 }
 
+
+.authBody {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.authForm {
+    border-radius: 10px;
+    background: rgb(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    width: auto;
+    height: auto;
+}
+
+.authForm p {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.authForm input {
+    width: 250px;
+}
+
+.authForm .helptext {
+    width: 250px;
+}
+
+.authHeading {
+    font-family: 'Italianno', cursive;
+    font-size: 48px;
+}

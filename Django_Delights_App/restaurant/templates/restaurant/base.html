@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Django Delights</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Italianno&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merienda:wght@500&display=swap" rel="stylesheet">
     {% block head %}
     {% endblock %}
 </head>
@@ -10,18 +14,30 @@
     <header>
         <h1 id='logo'>Django Delights</h1>
         <div>
-            <h3>Welcome, {{ username }}!</h3>
-            <h3><a href="{% url 'logout' %}">Logout</a></h3>
+            <p>
+                Welcome, {{ username }}!
+                <a id='logoutButton' href="{% url 'logout' %}">Logout</a>
+            </p>
+            
         </div>
     </header>
 
     <section id="base">
+        <div id='navGroup1'>
             <a href="{% url 'purchase_create' %}">RECORD A PURCHASE</a>
             <a href="{% url 'purchase' %}">VIEW PURCHASE LOG</a>
+        </div>
+
+        <div id='navGroup2'>
+            
             <a href="{% url 'menu_create' %}">ADD A MENU ITEM</a>
             <a href="{% url 'menu' %}">VIEW MENU</a>
+        </div>
+
+        <div id='navGroup3'>
             <a href="{% url 'ingredient_create' %}">ADD NEW INVENTORY ITEM</a>
             <a href="{% url 'inventory' %}">VIEW INVENTORY</a>
+        </div>
     </section>
 
     <section id="view">

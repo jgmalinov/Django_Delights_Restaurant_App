@@ -1,16 +1,26 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Register</title>
+    <link rel="stylesheet" href="{% static 'restaurant/style.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Italianno&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merienda:wght@500&display=swap" rel="stylesheet">
 </head>
-<body>
-  <h2>Registration Form</h2>
-  <a href="{% url 'login' %}">Already have an account? Login here!</a>
-  <form method="post">
+<body class='authBody'>
+
+  <form class='authForm' method="post">
+
+    <h2 class='authHeading'>Registration Form</h2>
+    <a href="{% url 'login' %}">Already have an account? Login here!</a>
+
     {% csrf_token %}
     {{ form.as_p }}
-      <button type="submit">Submit</button>
+
+    <button type="submit">Submit</button>
   </form>
 </body>
 </html>

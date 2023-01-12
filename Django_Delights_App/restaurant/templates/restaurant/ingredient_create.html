@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block content%}
-
+<h1>ADD A NEW ITEM TO THE INVENTORY</h1>
 <form method="POST">
   {% csrf_token %}
   {{ form.as_p }}
