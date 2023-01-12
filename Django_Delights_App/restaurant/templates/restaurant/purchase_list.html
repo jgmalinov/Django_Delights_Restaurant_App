@@ -26,7 +26,7 @@
     <tbody>
         {% for purchase in object_list %}
         <tr>
-          <td>{{ purchase.menu_item_id.name }}</td>
+          <td>{{ purchase.menu_item_name }}</td>
           <td>{{ purchase.quantity_purchased }}</td>
           <td>{{purchase.revenue|floatformat:2}}lv.</td>
           <td>{{purchase.cost|floatformat:2}}lv.</td>

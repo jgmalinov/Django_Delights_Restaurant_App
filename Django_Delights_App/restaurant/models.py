@@ -9,8 +9,8 @@ class NameField(models.CharField):
 
 class Ingredient(models.Model):
     name = NameField(max_length=50, null=False)
-    price = models.FloatField()
-    quantity_available = models.FloatField()
+    price = models.DecimalField(decimal_places=2, max_digits=10)
+    quantity_available = models.DecimalField(decimal_places=2, max_digits=10)
 
 
     class Metrics(models.TextChoices):
@@ -28,7 +28,7 @@ class Ingredient(models.Model):
 
 class MenuItem(models.Model):
     name = models.CharField(max_length=50)
-    price = models.FloatField()
+    price = models.DecimalField(decimal_places=2, max_digits=10)
 
     class Meta:
         ordering = ["name"]
@@ -45,7 +45,7 @@ class MenuItem(models.Model):
 class RecipeRequirement(models.Model):
     ingredient_id = models.ForeignKey(Ingredient, on_delete=models.PROTECT)
     menu_item_id = models.ForeignKey(MenuItem, on_delete=models.CASCADE)
-    quantity_needed = models.FloatField()
+    quantity_needed = models.DecimalField(decimal_places=2, max_digits=10)
 
     class Meta:
         constraints = [
@@ -57,10 +57,10 @@ class RecipeRequirement(models.Model):
 
 
 class Purchase(models.Model):
-    menu_item_id = models.ForeignKey(MenuItem, on_delete=models.PROTECT)
+    menu_item_name = NameField(max_length=50)
     time_of_purchase = models.DateTimeField()
-    revenue = models.FloatField()
-    cost = models.FloatField(default=0)
+    revenue = models.DecimalField(decimal_places=2, max_digits=10)
+    cost = models.DecimalField(decimal_places=2, max_digits=10)
     quantity_purchased = models.IntegerField(default=1)
 
     class Meta:

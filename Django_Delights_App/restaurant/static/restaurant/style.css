@@ -77,13 +77,15 @@ header div {
 }
 
 #view {
+    height: 550px;
     justify-self: center;
     align-self: center;
     grid-area: view;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    overflow: scroll;
+    scroll-behavior: smooth;
     border-radius: 10px;
     background: rgb(0, 0, 0, 0.3);
     backdrop-filter: blur(10px);
@@ -111,13 +113,11 @@ td, th {
 
 form {
     width: 600px;
+    height: 500px;
     padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: safe center;
-    border: 1px solid white;
-    overflow-y: scroll;
-    scroll-behavior: smooth;
 }
 
 form p {

@@ -14,6 +14,7 @@ import json
 from django.core import serializers
 from django.db.models import F
 from datetime import datetime
+from decimal import Decimal
 # Create your views here.
 
 def signup_view(request):
@@ -158,13 +159,13 @@ def PurchaseCreate(request):
 
     if request.method == "POST":
         menu_item = MenuItem.objects.get(name=request.POST['menu_item'])
-        item_quantity = int(request.POST['item_quantity'])
+        item_quantity = Decimal(request.POST['item_quantity'])
         recipe_requirements = RecipeRequirement.objects.filter(menu_item_id=menu_item)
         not_enough = []
 
         for requirement in recipe_requirements:
             ingredient = requirement.ingredient_id
-            quantity_needed = requirement.quantity_needed * float(item_quantity)
+            quantity_needed = requirement.quantity_needed * item_quantity;
             if quantity_needed > ingredient.quantity_available:
                 message_str = f'{ingredient.name} ({ingredient.quantity_available:.2f}/{quantity_needed:.2f}{ingredient.metric.lower()})'
                 not_enough.append(message_str)
@@ -183,7 +184,7 @@ def PurchaseCreate(request):
                 ingredient.quantity_available = ingredient.quantity_available - requirement.quantity_needed * item_quantity
                 ingredient.save()
 
-            new_purchase = Purchase(menu_item_id=menu_item,
+            new_purchase = Purchase(menu_item_name=menu_item.name,
                                     time_of_purchase=now_str,
                                     revenue=revenue,
                                     cost=cost,
