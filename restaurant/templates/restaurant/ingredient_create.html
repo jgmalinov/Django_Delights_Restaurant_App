@@ -1,0 +1,18 @@
+{% extends "restaurant/base.html" %}
+{% load static %}
+
+{% block head %}
+
+<link rel="stylesheet" href="{% static 'restaurant/style.css' %}">
+
+{% endblock %}
+
+{% block content%}
+<h1>ADD A NEW ITEM TO THE INVENTORY</h1>
+<form method="POST">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <input class="submitButton" type="submit" value="Submit">
+</form>
+
+{% endblock %}

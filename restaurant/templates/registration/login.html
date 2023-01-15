@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'restaurant/style.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Italianno&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merienda:wght@500&display=swap" rel="stylesheet">
+</head>
+
+<body class='authBody'>
+  
+  <form class='authForm' method="post">
+    <h2 class='authHeading'>Login</h2>
+
+    <h3><a href="{% url 'signup' %}">Don't have an account? Sign-up here!</a></h3>
+    
+    {% csrf_token %}
+    
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+     {% endif %}
+
+    {{ form.as_p }}
+      <button type="submit">Submit</button>
+  </form>
+
+</body>
+</html>

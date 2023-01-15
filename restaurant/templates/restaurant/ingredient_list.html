@@ -1,0 +1,39 @@
+{% extends "restaurant/base.html" %}
+
+{% load static %}
+
+{% block head %}
+
+<link rel="stylesheet" href="{% static 'restaurant/style.css' %}">
+
+{% endblock %}
+
+{% block content %}
+  <h1>HERE'S WHAT WE HAVE IN STORAGE</h1>
+  <table>
+    <thead>
+      <tr>
+        <th colspan="5">Inventory</th>
+      </tr>
+      <tr>
+        <th colspan="1">Name</th>
+        <th colspan="1">Price</th>
+        <th colspan="1">Available Quantity</th>
+      </tr>
+    </thead>
+
+    <tbody>
+        {% for inventory_item in object_list %}
+        <tr>
+          <td>{{inventory_item.name}}</td>
+          <td>{{inventory_item.price|floatformat:2}}lv.</td>
+          <td>{{inventory_item.quantity_available|floatformat:2}}{{inventory_item.get_metric_display}}</td>
+          <td><a href="{% url 'ingredient_update' inventory_item.id %}"><button>Edit</button></a></td>
+          <td><a href="{% url 'ingredient_delete' inventory_item.id %}"><button>Delete</button></a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+  <a href="{% url 'ingredient_create' %}">Add a new inventory item</a>
+
+{% endblock %}

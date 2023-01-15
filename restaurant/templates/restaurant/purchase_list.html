@@ -1,0 +1,53 @@
+{% extends "restaurant/base.html" %}
+{% load static %}
+
+{% block head %}
+
+<link rel="stylesheet" href="{% static 'restaurant/style.css' %}">
+
+{% endblock %}
+
+{% block content%}
+  <h1>HISTORY OF PURCHASES MADE</h1>
+  <table>
+    <thead>
+      <tr>
+        <th colspan="4">Purchase Log</th>
+      </tr>
+      <tr>
+        <th colspan="1">Name</th>
+        <th colspan="1">Quantity</th>
+        <th colspan="1">Bill</th>
+        <th colspan="1">Production Cost</th>
+        <th colspan="1">Transaction timestamp</th>
+      </tr>
+    </thead>
+
+    <tbody>
+        {% for purchase in object_list %}
+        <tr>
+          <td>{{ purchase.menu_item_name }}</td>
+          <td>{{ purchase.quantity_purchased }}</td>
+          <td>{{purchase.revenue|floatformat:2}}lv.</td>
+          <td>{{purchase.cost|floatformat:2}}lv.</td>
+          <td>{{purchase.time_of_purchase}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+    <tfoot>
+      <tr>
+        <th colspan="2"></th>
+        <th>Total Revenue</th>
+        <th>Total Production Cost</th>
+        <th>Net Profit</th>
+      </tr>
+      <tr>
+        <td colspan="2"></td>
+        <td>{{ total_revenue|floatformat:2 }}lv.</td>
+        <td>{{ total_cost|floatformat:2 }}lv.</td>
+        <td>{{ net_profit|floatformat:2 }}lv.</td>
+      </tr>
+    </tfoot>
+  </table>
+{% endblock %}
