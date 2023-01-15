@@ -1,9 +1,0 @@
-# created by virtualenv automatically
-
-# Django #
-*.log
-*.pot
-*.pyc
-
-# Settings #
-Django_Delights_App/Django_Delights_App/settings.py
