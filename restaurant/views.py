@@ -42,10 +42,16 @@ def home_view(request):
 
 @login_required
 def about_view(request):
-    return render("restaurant/about.html")
+    context = {"username": request.user.username}
+    return render(request, "restaurant/about.html", context)
 
 class InventoryList(LoginRequiredMixin, ListView):
     model = Ingredient
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["username"] = self.request.user.username
+        return context
 
 
 class MenuItemList(LoginRequiredMixin, ListView):
@@ -65,6 +71,7 @@ class MenuItemList(LoginRequiredMixin, ListView):
             recipe_requirements.append({menu_item: requirement_str})
 
         context["recipe_requirements"] = recipe_requirements
+        context["username"] = self.request.user.username
         return context
 
 class PurchaseList(LoginRequiredMixin, ListView):
@@ -81,6 +88,7 @@ class PurchaseList(LoginRequiredMixin, ListView):
         context["total_cost"] = total_cost
         context["total_revenue"] = total_revenue
         context["net_profit"] = net_profit
+        context["username"] = self.request.user.username
 
         return context
 
@@ -125,16 +133,16 @@ def MenuItemCreate(request):
                 ingredient_counter+= 1
 
             messages.add_message(request, messages.SUCCESS, 'Menu item successfully added!')
-            context = {"ingredients": ingredients, "form": menu_item_form, "ingredients_json": ingredients_json}
+            context = {"ingredients": ingredients, "form": menu_item_form, "ingredients_json": ingredients_json, "username": request.user.username}
 
 
         else:
             form = MenuItemCreateForm()
-            context = { "ingredients": ingredients, "form": menu_item_form, "ingredients_json": ingredients_json }
+            context = { "ingredients": ingredients, "form": menu_item_form, "ingredients_json": ingredients_json, "username": request.user.username}
 
     else:
         form = MenuItemCreateForm()
-        context = {"ingredients": ingredients, "form": form, "ingredients_json": ingredients_json }
+        context = {"ingredients": ingredients, "form": form, "ingredients_json": ingredients_json, "username": request.user.username}
 
     return render(request, "restaurant/menuitem_create.html", context)
 
@@ -155,7 +163,7 @@ def MenuItemDelete(request, pk):
 @login_required
 def PurchaseCreate(request):
     menu_items = MenuItem.objects.all()
-    context = {'menu_items': menu_items}
+    context = {'menu_items': menu_items, "username": request.user.username}
 
     if request.method == "POST":
         menu_item = MenuItem.objects.get(name=request.POST['menu_item'])
@@ -204,12 +212,27 @@ class IngredientCreateView(LoginRequiredMixin, CreateView):
     template_name = "restaurant/ingredient_create.html"
     success_url = "/accounts/inventory"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["username"] = self.request.user.username
+        return context
+
 class IngredientUpdateView(LoginRequiredMixin, UpdateView):
     model = Ingredient
     fields = "__all__"
     template_name = "restaurant/ingredient_update.html"
     success_url = "/accounts/inventory"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["username"] = self.request.user.username
+        return context
 
 class IngredientDeleteView(LoginRequiredMixin, DeleteView):
     model = Ingredient
     success_url = "/accounts/inventory"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["username"] = self.request.user.username
+        return context

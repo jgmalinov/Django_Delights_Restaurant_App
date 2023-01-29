@@ -215,3 +215,80 @@ footer {
     font-family: 'Italianno', cursive;
     font-size: 48px;
 }
+
+@media only screen and (max-width: 950px) {
+    body {
+        grid-template: 10% 15% 65% 10% / 1fr;
+        grid-template-areas:
+            "header"
+            "base"
+            "view"
+            "footer";
+    }
+
+    #logo {
+        margin-top: 3px;
+    }
+
+    #base {
+        flex-direction: row;
+        border-top: 1px solid white;
+        border-bottom: 1px solid white;
+    }
+
+    #base a {
+        padding: 0px 0px 0px 20px;
+        margin: 5px 0px
+    }
+
+    #navGroup1, #navGroup2, #navGroup3 {
+        padding: 25px 10px 5px 10px;
+    }
+
+    #navGroup1, #navGroup2 {
+        border-right: 1px solid white;
+        border-bottom: none;
+    }
+
+    #view {
+        height: 100%;
+        width: 94%;
+        padding: 0px 25px;
+    }
+
+    footer {
+        border-top: 1px solid white;
+        margin-top: 2px;
+    }
+}
+
+@media only screen and (max-width: 750px) {
+    #base a {
+        font-size: 0.9rem;
+    }
+}
+
+@media only screen and (max-width: 520px) {
+    #logo {
+        display: flex;
+        font-size: 2.2rem;
+        align-items: center;
+    }
+
+    header div {
+        display: flex;
+        align-items: center;
+    }
+
+    header p {
+        font-size: 0.8rem;
+    }
+
+    #base a {
+        font-size: 0.7rem;
+    }
+
+    form {
+        padding: 0px;
+    }
+}
