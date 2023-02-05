@@ -1,4 +1,4 @@
-# Django Delights (https://django-delights-restaurant-app.herokuapp.com/)
+# [Django Delights](https://django-delights-restaurant-app.herokuapp.com/)
 ## Test credentials:
 - email: **jgmalinov**
 - password: **Test!234**
