@@ -1,6 +1,6 @@
 # [Django Delights](https://django-delights-restaurant-app.herokuapp.com/)
 ## Test credentials:
-- email: **jgmalinov**
+- email: **Test**
 - password: **Test!234**
 
 The app is currently deployed on Heroku. To open it, please click on the heading or find it at the following URL:  
